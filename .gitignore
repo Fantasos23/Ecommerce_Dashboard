@@ -216,3 +216,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# macOS
+.DS_Store
+
+# Archivos de entorno y logs
+.env
+.envrc
+*.log
+
+# Carpetas de datos pesados (opcional)
+data/
+Data/
+datasets_procesados/dataset_vtex_unificado.csv
+
