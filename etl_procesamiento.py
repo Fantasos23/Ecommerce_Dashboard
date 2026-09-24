@@ -67,6 +67,18 @@ def unificar_carpeta(nombre_fuente, separador_default=';', id_duplicados=None, u
         except Exception as e:
             print(f"⚠️ No se pudo sincronizar Meta vía API ({e}). Procediendo con archivos locales de Data/Meta...")
 
+    if nombre_fuente.upper() == 'GOOGLE' and usar_api:
+        try:
+            from google_ads_api_sync import sincronizar_google_ads
+            print("\n" + "="*50)
+            print("SINCRONIZANDO GOOGLE ADS DIRECTAMENTE DESDE LA API")
+            print("="*50)
+            res = sincronizar_google_ads()
+            if res.get('status') == 'success':
+                return
+        except Exception as e:
+            print(f"⚠️ No se pudo sincronizar Google Ads vía API ({e}). Procediendo con archivos locales de Data/Google...")
+
     path_carpeta = DATA_DIR / nombre_fuente
     archivos = list(path_carpeta.glob('*.csv')) + list(path_carpeta.glob('*.xlsx'))
 

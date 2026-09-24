@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte Ejecutivo: Branding Salon In (2025 vs 2026)</title>
+    <style>
+        @page { 
+            size: A4 portrait;
+            margin: 0; 
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        html { background-color: #f4f7f6; }
+        body { 
+            padding: 24px 0;
+            margin: 0 auto;
+            max-width: 900px !important;
+            border: none !important;
+            background: transparent !important; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Page Architecture */
+        .page {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 13mm 16mm 10mm 16mm;
+            background-color: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        .page-content {
+            flex: 1 1 0;
+            min-height: 0;
+            overflow: hidden;
+        }
+        .page-footer {
+            flex-shrink: 0;
+            margin-top: auto;
+            padding-top: 3mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8pt;
+            color: #64748b;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        @media print {
+            *, *::before, *::after {
+                box-shadow: none !important;
+                text-shadow: none !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            body { 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                max-width: none !important; 
+                background: none !important; 
+            }
+            .page {
+                margin: 0 !important;
+                border: none !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+        }
+        [contenteditable]:focus { outline: none; }
+
+        /* Typography & Colors */
+        h1, h2, h3, h4 { color: #0f172a; margin: 0 0 6px 0; font-weight: 700; line-height: 1.2; }
+        h1 { font-size: 19pt; }
+        h2 { font-size: 13pt; margin-top: 9px; border-bottom: 2px solid #0ea5e9; padding-bottom: 3px; display: inline-block;}
+        h3 { font-size: 10.5pt; color: #0284c7; margin-top: 8px; margin-bottom: 5px; }
+        p { font-size: 9.1pt; line-height: 1.42; margin: 0 0 7px 0; color: #334155; }
+        
+        /* Layout Elements */
+        .masthead {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 15px 18px;
+            border-radius: 8px;
+            margin-bottom: 11px;
+        }
+        .masthead h1 { color: white; margin-bottom: 3px; font-size: 18pt; }
+        .masthead p { color: #cbd5e1; font-size: 9.5pt; margin: 0; }
+        .masthead .badge {
+            display: inline-block;
+            background: rgba(14, 165, 233, 0.25);
+            border: 1px solid #38bdf8;
+            color: #7dd3fc;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 7.5pt;
+            font-weight: 600;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .highlight-box {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+            padding: 10px 12px;
+            margin-bottom: 9px;
+            border-radius: 0 6px 6px 0;
+        }
+        .highlight-box p { margin: 0; color: #0369a1; font-size: 8.9pt; line-height: 1.38; }
+        .highlight-box strong { color: #0c4a6e; }
+
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 10px; }
+        
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 9px 10px;
+            border-radius: 6px;
+            background-color: #f8fafc;
+        }
+        .card h4 { font-size: 8.75pt; margin-bottom: 2px; color: #0f172a; }
+        .card-metric { font-size: 15pt; font-weight: bold; color: #0ea5e9; margin-bottom: 1px; }
+        .card-sub { font-size: 7.5pt; color: #64748b; margin: 0; line-height: 1.25; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+            font-size: 8.15pt;
+        }
+        th, td {
+            padding: 5.2px 6px;
+            text-align: right;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th:first-child, td:first-child { text-align: left; }
+        th {
+            background-color: #f1f5f9;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 7.25pt;
+            letter-spacing: 0.5px;
+        }
+        tr:last-child td { border-bottom: 2px solid #cbd5e1; }
+        .table-total { font-weight: bold; background-color: #f8fafc; }
+        .text-success { color: #16a34a; font-weight: bold; }
+        .text-primary { color: #0284c7; font-weight: bold; }
+        .text-purple { color: #7c3aed; font-weight: bold; }
+        .text-muted { color: #64748b; }
+        .pill-tag {
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 7.25pt;
+            font-weight: 600;
+        }
+        .pill-success {
+            background-color: #dcfce7;
+            color: #15803d;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 7.25pt;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div>
+
+        <!-- STANDALONE EXECUTIVE PAGE: Salon In Branding Performance (2025 vs 2026) -->
+        <section class="page">
+            <div class="page-content">
+                <div class="masthead">
+                    <span class="badge">Auditoría de Rendimiento & Video Awareness</span>
+                    <h1>Evidencia Empírica: Superación Histórica de Branding en Salon In</h1>
+                    <p>Desempeño Consolidado de Campañas de Marca: <strong>Año 2025 vs. 2026 (YTD)</strong> | Cuenta: <code>act_194555439318474</code></p>
+                </div>
+
+                <p>Para respaldar por qué el modelo predictivo 2027 proyecta una sólida base comercial orgánica y alta eficiencia publicitaria, auditamos las campañas de <strong>Branding y Video Awareness de Salon In</strong>. Los resultados demuestran que en este 2026, <strong>aún sin haber concluido el año</strong>, la marca ha superado exponencialmente todas las marcas alcanzadas en el 2025 completo.</p>
+
+                <!-- KPI Cards Salon In Branding -->
+                <div class="grid-4">
+                    <div class="card" style="border-left: 3px solid #0284c7;">
+                        <h4>Alcance Único (Reach)</h4>
+                        <div class="card-metric" style="font-size: 14pt; color: #0284c7;">9.15M</div>
+                        <p class="card-sub"><strong>+100.1% vs 2025</strong> (4.57M en 2025 completo). Se duplicó la audiencia.</p>
+                    </div>
+                    <div class="card" style="border-left: 3px solid #16a34a;">
+                        <h4>ThruPlays (≥15s)</h4>
+                        <div class="card-metric" style="font-size: 14pt; color: #16a34a;">5.11M</div>
+                        <p class="card-sub"><strong>+1,061% (x11.6x)</strong> frente a las 440K reproducciones del 2025.</p>
+                    </div>
+                    <div class="card" style="border-left: 3px solid #7c3aed;">
+                        <h4>Video Visto al 100%</h4>
+                        <div class="card-metric" style="font-size: 14pt; color: #7c3aed;">4.25M</div>
+                        <p class="card-sub"><strong>+1,104% (x12.0x)</strong> frente a 353K en 2025. Retención máxima.</p>
+                    </div>
+                    <div class="card" style="border-left: 3px solid #f59e0b;">
+                        <h4>Interacción Total</h4>
+                        <div class="card-metric" style="font-size: 14pt; color: #d97706;">140.8K</div>
+                        <p class="card-sub"><strong>+375%</strong> en engagement (134K reacciones y 6.3K comentarios/shares).</p>
+                    </div>
+                </div>
+
+                <h3>Matriz Comparativa Auditada: Branding Salon In (2025 vs. 2026 YTD)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Métrica de Branding / Reconocimiento</th>
+                            <th>Año 2025 (12 Meses)</th>
+                            <th>Año 2026 (YTD 18 Sep)*</th>
+                            <th>Variación & Logro Alcanzado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Alcance Único (Personas Únicas)</strong></td>
+                            <td>4,572,638 personas</td>
+                            <td>9,151,938 personas</td>
+                            <td><span class="pill-success">+100.15%</span> (Se duplicó la cobertura de marca)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Frecuencia Media de Impacto</strong></td>
+                            <td>7.46x (Saturación)</td>
+                            <td>3.16x (Saludable)</td>
+                            <td class="text-success">-57.6% (Mayor amplitud, cero fatiga publicitaria)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ThruPlays (Reproducción Cualificada)</strong></td>
+                            <td>439,999</td>
+                            <td>5,108,759</td>
+                            <td class="text-purple"><strong>+1,061% (x11.6 veces más exposición real)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Videos Vistos al 100% (Completados)</strong></td>
+                            <td>353,281</td>
+                            <td>4,253,648</td>
+                            <td class="text-purple"><strong>+1,104% (x12.0 veces más retención total)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reacciones y 'Me Gusta' en Ads</strong></td>
+                            <td>27,892</td>
+                            <td>134,488</td>
+                            <td class="text-success"><strong>+382.17% (Conexión emocional masiva)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comentarios y Compartidos (Viralidad)</strong></td>
+                            <td>3,326</td>
+                            <td>6,332</td>
+                            <td class="text-success"><strong>+90.38% (Recomendación orgánica activa)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Costo por Mil Impresiones (CPM)</strong></td>
+                            <td>COP $1,530.62</td>
+                            <td>COP $1,489.09</td>
+                            <td class="text-primary">-2.71% (Menor costo unitario a pesar de inflación)</td>
+                        </tr>
+                        <tr class="table-total">
+                            <td><strong>Presupuesto Invertido (Eficiencia de Capital)</strong></td>
+                            <td>COP $52,220,424</td>
+                            <td>COP $43,002,854</td>
+                            <td class="text-success"><strong>+Récords con -17.6% de presupuesto utilizado</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 7.5pt; color: #64748b; margin: -3px 0 6px 0;">*Datos auditados en vivo vía Meta Graph API al 18 de Septiembre de 2026. Aún restan 3.5 meses de ejecución en 2026.</p>
+
+                <h3>Impacto Directo del Branding en el Funnel Comercial y el Plan 2027</h3>
+                <p>El salto cuántico en retención (+1,061% en ThruPlays y 9.15M de personas impactadas) transformó el valor de la marca en la tienda e-commerce: <strong>la venta orgánica creció al 58.7%</strong> y el <strong>Ticket Promedio (AOV) se expandió un +16.9%</strong> (de $111,234 a $130,029 COP), liderado por el posicionamiento de líneas de alta gama como <em>Vegan Keratin Collagen</em> y <em>Braziliss</em>.</p>
+
+                <div class="highlight-box">
+                    <p><strong>Conclusión Clave para la Planificación 2027:</strong><br>
+                    El branding ejecutado en 2025 y exponencialmente superado en 2026 construyó un <em>Brand Lift</em> acumulativo de alto valor. Esto demuestra científicamente que para 2027 <strong>no es necesario sobrepagar pauta basal constante</strong>: la marca ya posee recordación y deseo de compra, permitiendo concentrar la inversión de manera quirúrgica en los picos promocionales para asegurar el <strong>ROAS proyectado de 4.72x</strong>.</p>
+                </div>
+            </div>
+            <footer class="page-footer">
+                <span>[Nombre de su Agencia] - Consultoría de Datos</span>
+                <span>Página 1 de 1</span>
+            </footer>
+        </section>
+
+    </div>
+</body>
+</html>

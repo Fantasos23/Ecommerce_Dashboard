@@ -12,6 +12,7 @@ from etl_procesamiento import unificar_carpeta
 from procesar_vtex_agrupado import generar_dataset_vtex_por_orden
 from meta_api_sync import sincronizar_meta_ads
 from vtex_api_sync import sincronizar_vtex_orders
+from google_ads_api_sync import sincronizar_google_ads
 
 warnings.filterwarnings('ignore', category=FutureWarning)
 
@@ -770,7 +771,7 @@ def generar_linea_frecuencia_conversion(df_meta_f):
 # ==========================================================
 st.title("Data Tienda Colombia")
 
-col_b1, col_b2, col_b3, col_b4, col_b5 = st.columns([1.2, 1, 1, 1, 1])
+col_b1, col_b2, col_b3, col_b4, col_b5, col_b6 = st.columns([1.1, 1, 1, 1, 0.9, 0.9])
 with col_b1:
     st.caption("Consolidado por Órdenes Únicas, Canales, Descuentos e Inversión.")
 
@@ -797,6 +798,17 @@ with col_b3:
                 st.error(f"Error sincronizando Meta: {e}")
 
 with col_b4:
+    if st.button("🔄 Sync Google API", type="secondary", use_container_width=True, help="Descarga e incrementa los datos diarios más recientes desde Google Ads API"):
+        with st.spinner("Sincronizando con Google Ads API..."):
+            try:
+                res = sincronizar_google_ads()
+                st.cache_data.clear()
+                st.success(f"¡Google Ads sincronizado! (Hasta {res.get('max_fecha', 'hoy')})")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error sincronizando Google Ads: {e}")
+
+with col_b5:
     if st.button("1.Unificar ETL", type="secondary", use_container_width=True, help="Unifica todos los archivos de VTEX, Meta y Google"):
         with st.spinner("Unificando archivos..."):
             unificar_carpeta('VTEX', ';', 'Order')
@@ -806,7 +818,7 @@ with col_b4:
         st.success("¡Completado!")
         st.rerun()
 
-with col_b5:
+with col_b6:
     if st.button("2.Agrupar Clientes", type="secondary", use_container_width=True, help="Agrupa a nivel de cliente y orden única"):
         with st.spinner("Agrupando a nivel de Orden Única..."):
             generar_dataset_vtex_por_orden()
