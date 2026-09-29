@@ -61,12 +61,17 @@ def generar_dataset_vtex_por_orden():
 
     df_sub = df[cols_existentes].copy()
 
-    # 2. Asegurar tipos de datos numéricos
+    # 2. Asegurar tipos de datos numéricos y zona horaria local (Colombia UTC-5)
     if 'Quantity_SKU' in df_sub.columns:
         df_sub['Quantity_SKU'] = pd.to_numeric(df_sub['Quantity_SKU'].astype(str).str.replace(',', '.'), errors='coerce').fillna(0)
 
     if 'Total Value' in df_sub.columns:
         df_sub['Total Value'] = pd.to_numeric(df_sub['Total Value'].astype(str).str.replace(',', '.'), errors='coerce').fillna(0)
+
+    if 'Creation Date' in df_sub.columns:
+        # Convertir timestamps UTC a hora local de Colombia (America/Bogota)
+        dt_utc = pd.to_datetime(df_sub['Creation Date'], errors='coerce', utc=True)
+        df_sub['Creation Date'] = dt_utc.dt.tz_convert('America/Bogota').dt.strftime('%Y-%m-%d %H:%M:%S')
 
     cols_texto = [c for c in cols_existentes if c not in ['Order', 'Quantity_SKU', 'Total Value']]
     for c in cols_texto:
@@ -158,8 +163,6 @@ def generar_dataset_vtex_por_orden():
     if 'Client Document' in df_agrupado.columns and 'Creation Date' in df_agrupado.columns:
         df_agrupado['Creation Date_DT'] = pd.to_datetime(
             df_agrupado['Creation Date'], 
-            format='mixed', 
-            dayfirst=True, 
             errors='coerce'
         )
         

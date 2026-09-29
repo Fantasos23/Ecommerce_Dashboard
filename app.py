@@ -486,7 +486,15 @@ def cargar_datos_vtex():
         return pd.DataFrame()
     
     df = pd.read_csv(VTEX_AGRUPADO_PATH, low_memory=False)
-    df['Creation Date'] = pd.to_datetime(df['Creation Date'], errors='coerce').dt.floor('D')
+    
+    # Manejo de zona horaria: asegurar hora local Colombia (America/Bogota)
+    fechas = pd.to_datetime(df['Creation Date'], errors='coerce')
+    if fechas.dt.tz is not None:
+        fechas = fechas.dt.tz_convert('America/Bogota').dt.tz_localize(None)
+    elif df['Creation Date'].astype(str).str.endswith('Z').any() or df['Creation Date'].astype(str).str.contains(r'\+\d{2}').any():
+        fechas = pd.to_datetime(df['Creation Date'], errors='coerce', utc=True).dt.tz_convert('America/Bogota').dt.tz_localize(None)
+    
+    df['Creation Date'] = fechas.dt.floor('D')
     df = df.dropna(subset=['Creation Date'])
     
     df['Fecha_Clean'] = df['Creation Date'].dt.strftime('%Y-%m-%d')
@@ -516,9 +524,15 @@ def cargar_datos_sku():
     
     df_sku = pd.read_csv(VTEX_SKU_PATH, low_memory=False)
     
-    # 1. Parseo de Fechas
+    # 1. Parseo de Fechas en hora local Colombia (America/Bogota)
     if 'Creation Date' in df_sku.columns:
-        df_sku['Creation Date'] = pd.to_datetime(df_sku['Creation Date'], format='mixed', dayfirst=True, errors='coerce').dt.floor('D')
+        fechas_sku = pd.to_datetime(df_sku['Creation Date'], errors='coerce')
+        if fechas_sku.dt.tz is not None:
+            fechas_sku = fechas_sku.dt.tz_convert('America/Bogota').dt.tz_localize(None)
+        elif df_sku['Creation Date'].astype(str).str.endswith('Z').any() or df_sku['Creation Date'].astype(str).str.contains(r'\+\d{2}').any():
+            fechas_sku = pd.to_datetime(df_sku['Creation Date'], errors='coerce', utc=True).dt.tz_convert('America/Bogota').dt.tz_localize(None)
+        
+        df_sku['Creation Date'] = fechas_sku.dt.floor('D')
         df_sku = df_sku.dropna(subset=['Creation Date'])
         df_sku['Fecha_Clean'] = df_sku['Creation Date'].dt.strftime('%Y-%m-%d')
         df_sku['Año'] = df_sku['Creation Date'].dt.year
@@ -938,6 +952,21 @@ elif periodo_sel == "Mes":
 # ==========================================================
 st.sidebar.header("Filtros de Segmentación")
 
+# Filtro de Estado del Pedido (por defecto incluye Facturados y Pagos Pendientes)
+estados_disp = sorted(df_f['Status'].dropna().unique().tolist()) if 'Status' in df_f.columns else []
+estado_sel = []
+if estados_disp:
+    estado_sel = st.sidebar.multiselect(
+        "Estado del Pedido:",
+        estados_disp,
+        default=[],
+        placeholder="Todos (Facturados + Pagos Pendientes)"
+    )
+    if estado_sel:
+        df_f = df_f[df_f['Status'].isin(estado_sel)]
+        if not df_sku_f.empty and 'Status' in df_sku_f.columns:
+            df_sku_f = df_sku_f[df_sku_f['Status'].isin(estado_sel)]
+
 tipo_cliente_sel = st.sidebar.multiselect("Tipo de Cliente:", ["Nuevo", "Recurrente"], default=[], placeholder="Todos los clientes")
 if tipo_cliente_sel:
     df_f = df_f[df_f['Tipo_Cliente'].isin(tipo_cliente_sel)]
@@ -1002,6 +1031,7 @@ else:
     etiqueta_comp = f"vs {periodo_sel} {anio_sel - 1}"
 
 if not df_comp.empty:
+    if estado_sel and 'Status' in df_comp.columns: df_comp = df_comp[df_comp['Status'].isin(estado_sel)]
     if tipo_cliente_sel: df_comp = df_comp[df_comp['Tipo_Cliente'].isin(tipo_cliente_sel)]
     if canales_sel: df_comp = df_comp[df_comp['Canal_Estandar'].isin(canales_sel)]
     if origenes_sel: df_comp = df_comp[df_comp['Origen_Estandar'].isin(origenes_sel)]
